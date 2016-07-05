@@ -184,12 +184,11 @@ public class MeasurementsControllerTest {
 		this.measurementXWikiObjects.add(obj);
 
 		PatientData<MeasurementEntry> result = this.mocker.getComponentUnderTest().load(this.patient);
-
+		Assert.assertNotNull(result);
 	}
 
 	@Test
 	public void typeThrowsComponentLookupException() throws ComponentLookupException {
-		Date date = new Date();
 		String age = "67";
 		String type = "armspan";
 		String side = "l";
@@ -201,7 +200,7 @@ public class MeasurementsControllerTest {
 		when(this.obj1.getDoubleValue(VALUE_KEY)).thenReturn(value);
 
 		PatientData<MeasurementEntry> result = this.mocker.getComponentUnderTest().load(this.patient);
-		MeasurementEntry m = result.get(0);
+		Assert.assertNotNull(result);
 	}
 
 	@Test
@@ -218,13 +217,11 @@ public class MeasurementsControllerTest {
 		PatientData<MeasurementEntry> result = this.mocker.getComponentUnderTest().load(this.patient);
 
 		MeasurementEntry m = result.get(0);
-		Assert.assertNull(m.getDate());
+		Assert.assertNotNull(m.getDate());
 	}
 
 	@Test
 	public void dateMissingTest() throws Exception {
-		List<MeasurementEntry> internalList = new LinkedList<>();
-		Date date = null;
 		String age = "67";
 		String type = "foot";
 		String side = "l";
@@ -413,7 +410,7 @@ public class MeasurementsControllerTest {
 		doReturn(patientData).when(this.patient).getData(CONTROLLER_NAME);
 
 		PatientData sexData = mock(PatientData.class);
-		when(sexData.getValue()).thenReturn("M");
+		when(sexData.getValue()).thenReturn(male);
 		when(this.patient.getData("sex")).thenReturn(sexData);
 
 		JSONObject json = new JSONObject();
@@ -421,7 +418,6 @@ public class MeasurementsControllerTest {
 		selectedFields.add(CONTROLLER_NAME);
 
 		this.mocker.getComponentUnderTest().writeJSON(this.patient, json, selectedFields);
-
 	}
 
 	// ------------Read Tests------------
@@ -567,7 +563,6 @@ public class MeasurementsControllerTest {
 		XWikiContext context = xcontextProvider.get();
 		when(context.getWiki()).thenReturn(this.xwiki);
 		this.mocker.getComponentUnderTest().save(this.patient);
-
 	}
 
 	@Test
@@ -590,5 +585,4 @@ public class MeasurementsControllerTest {
 		verify(this.obj1).set(SIDE_KEY, entry.getSide(), context);
 		verify(this.obj1).set(VALUE_KEY, entry.getValue(), context);
 	}
-
 }
