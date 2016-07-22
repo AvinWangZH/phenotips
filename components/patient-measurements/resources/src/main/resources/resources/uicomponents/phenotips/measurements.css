@@ -67,6 +67,7 @@
 }
 #measurements td {
   border: 0;
+  box-sizing: border-box;
 }
 .measurement-set.proto {
   display: none;
